@@ -1,0 +1,19 @@
+[project]
+version = 1.0.0
+type = application
+name = Cradle
+
+[blobs]
+Files = pbspro-execution-18.1.4-0.x86_64.rpm, pbspro-server-18.1.4-0.x86_64.rpm, pbspro-client-18.1.4-0.x86_64.rpm, sct13_lnx64_installer.zip, sct11_lnx64_installer.zip, scFLOW2020_lnx64_installer_202005.bin, st2020_lnx64_installer_202005.bin
+
+[spec master]
+run_list = role[pbspro_master_role]
+
+[spec execute]
+run_list = role[pbspro_execute_role]
+
+[config Cradle.version]
+Required = True
+Label = Cradle version
+Description = Version of Cradle to install on the cluster. Package should be named sct<version>-<platform>.zip
+DefaultValue = 13
