@@ -7,6 +7,14 @@
 1. pogo update (Azure CycleCloud upload configuration)
 1. Install CycleCloud CLI
 
+## How to install 
+
+1. tar zxvf cyclecloud-Cradle<version>.tar.gz
+1. cd cyclecloud-Cradle<version>
+1. Rewrite "Files" attribute for your binariy in "project.ini" file.
+1. run "cyclecloud project upload azure-storage" for uploading template to CycleCloud
+1. "cyclecloud import_template -f templates/pbs_extended_nfs_cradle.txt" for register this template to your CycleCloud
+
 ## How to run MSC Software Cradle SCRYU/Tetra, scFLOW, STREAM
 
 1. Create Execute Node manually
