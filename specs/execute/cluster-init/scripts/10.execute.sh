@@ -19,12 +19,12 @@ if [[ -z $CUSER ]]; then
 fi
 echo ${CUSER} > /mnt/exports/shared/CUSER
 HOMEDIR=/shared/home/${CUSER}
-CYCLECLOUD_SPEC_PATH=/mnt/cluster-init/LS-DYNA/execute
+CYCLECLOUD_SPEC_PATH=/mnt/cluster-init/Cradle/execute
 
-LSDYNA_VERSION=R9_3_0
-LSDYNA_PLATFORM=x64_redhat54_ifort131_sse2_platformmpi
-MPI_PLATFORM=platform_mpi
-
+cFLOW_VERSION=13
+scFLOW_VERSION=$(jetpack config scFLOW_VERSION)
+STREAM_VERSION=st2020
+STREAM_VERSION=$(jetpack config STREAM_VERSION)
 
 # resource ulimit setting
 CMD1=$(grep memlock /etc/security/limits.conf | head -2)
@@ -61,5 +61,17 @@ if [[ ${CORES} = 120 ]] ; then
   grep "vm.zone_reclaim_mode = 1" /etc/sysctl.conf || echo "vm.zone_reclaim_mode = 1" >> /etc/sysctl.conf sysctl -p
 fi
 
+# Installation
+case ${scFLOW_VERSION} in
+    11, 13 )
+    # scFLOW Directory
+    if [[ ! -d /opt/intel/impi/5.1.3.223 ]]; then
+       tar zxf ${HOMEDIR}/apps/l_mpi_p_5.1.3.223.tgz -C ${HOMEDIR}/apps/
+       sed -i -e 's/ACCEPT_EULA=decline/ACCEPT_EULA=accept/' ${HOMEDIR}/apps/l_mpi_p_5.1.3.223/silent.cfg
+       sed -i -e 's/ACTIVATION_TYPE=exist_lic/ACTIVATION_TYPE=trial_lic/' ${HOMEDIR}/apps/l_mpi_p_5.1.3.223/silent.cfg
+       ${HOMEDIR}/apps/l_mpi_p_5.1.3.223/install.sh -s ${HOMEDIR}/apps/l_mpi_p_5.1.3.223/silent.cfg
+    fi
+    ;;
+esac
 
 echo "end of 10.execute.sh"
